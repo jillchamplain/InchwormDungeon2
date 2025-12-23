@@ -46,9 +46,14 @@ public class UIManager : MonoBehaviour
         if (gameState == GameState.RUNNER)
         {
             getUIGroup("Runner").UpdateUI(true, thePlayer);
+            getUIGroup("World Runner").UpdateUI(true, thePlayer);
         }
         else
+        {
             getUIGroup("Runner").UpdateUI(false);
+            getUIGroup("World Runner").UpdateUI(false);
+        }
+
     }
 
     public void ShooterUI()

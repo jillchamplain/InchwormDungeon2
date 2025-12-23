@@ -1,6 +1,7 @@
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using DG.Tweening;
 public enum GameState
 {
     NULL = -1,
@@ -14,6 +15,8 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     [SerializeField] GameState curState = GameState.RUNNER;
 
     public void setGameState(int index)
@@ -22,54 +25,54 @@ public class GameManager : MonoBehaviour
     }
     public void setGameState(GameState newState)
     {
-		GameState bufferState;
+        GameState bufferState;
 
-		switch (newState)
+        switch (newState)
         {
             case GameState.RUNNER:
-				lastState = curState;
-				curState = newState;
+                lastState = curState;
+                curState = newState;
 
-				Time.timeScale = 1;
+                Time.timeScale = 1;
                 player.controller.setGameState(curState);
                 ui.setGameState(GameState.RUNNER);
                 break;
             case GameState.SHOOTER:
-				lastState = curState;
-				curState = newState;
+                lastState = curState;
+                curState = newState;
 
-				Time.timeScale = 1;
+                Time.timeScale = 1;
                 player.controller.setGameState(curState);
                 ui.setGameState(GameState.SHOOTER);
                 break;
             case GameState.PAUSED:
-                
-                if(curState == GameState.PAUSED) //Toggle off
+
+                if (curState == GameState.PAUSED) //Toggle off
                 {
-					
-					//Debug.Log("unpausing");
+
+                    //Debug.Log("unpausing");
                     Time.timeScale = 1;
-					player.controller.setGameState(lastState);
+                    player.controller.setGameState(lastState);
                     ui.setGameState(lastState);
 
                     bufferState = lastState;
-					lastState = curState;
-					curState = bufferState;
-					ui.PauseUI();
+                    lastState = curState;
+                    curState = bufferState;
+                    ui.PauseUI();
 
-				}
+                }
                 else
                 {
-					
-					//Debug.Log("pausing");	
-					lastState = curState;
+
+                    //Debug.Log("pausing");	
+                    lastState = curState;
                     curState = newState;
-					player.controller.setGameState(GameState.PAUSED);
-					ui.setGameState(GameState.PAUSED);
-					ui.PauseUI();
-					Time.timeScale = 0;
-				}
-				break;
+                    player.controller.setGameState(GameState.PAUSED);
+                    ui.setGameState(GameState.PAUSED);
+                    ui.PauseUI();
+                    Time.timeScale = 0;
+                }
+                break;
         }
     }
 
@@ -83,6 +86,10 @@ public class GameManager : MonoBehaviour
         Shooting.playerReload += PlayerReload;
         Shooting.playerStopReload += PlayerStopReload;
         Shooting.playerShoot += PlayerShoot;
+
+        Health.playerHit += PlayerHit;
+        Health.playerHealed += PlayerHeal;
+
     }
 
     private void OnDisable()
@@ -90,8 +97,19 @@ public class GameManager : MonoBehaviour
         Shooting.playerReload -= PlayerReload;
         Shooting.playerStopReload -= PlayerStopReload;
         Shooting.playerShoot -= PlayerShoot;
+
+        Health.playerHit -= PlayerHit;
+        Health.playerHealed -= PlayerHeal;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
+
     void Start()
     {
         setGameState(GameState.RUNNER);
@@ -105,7 +123,7 @@ public class GameManager : MonoBehaviour
         {
             if (curState == GameState.PAUSED)
             {
-                
+
                 Debug.Log("unfreeze");
             }
             Pause();
@@ -114,7 +132,7 @@ public class GameManager : MonoBehaviour
 
     void SetUp()
     {
-        switch(curState)
+        switch (curState)
         {
             case GameState.PAUSED:
                 break;
@@ -128,69 +146,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-	#region STATES
-	void Pause()
-    {
-        setGameState(GameState.PAUSED);
-        
-        //pull up UI
-	}
-
-    void Death()
-    {
-        //player died
-    }
-
-    #endregion
-
-    void PlayerHit(Player thePlayer)
-    {
-		switch (curState)
-		{
-			case GameState.PAUSED:
-				break;
-			case GameState.RUNNER:
-				ui.RunnerUI(thePlayer);
-				break;
-			case GameState.SHOOTER:
-				//ui.RunnerUI(thePlayer);
-				break;
-		}
-	}
-
-    #region SHOOTING
-    void PlayerShoot(Player thePlayer)
-    {
-        switch(curState)
-        {
-            case GameState.PAUSED:
-                break;
-            case GameState.RUNNER:
-                ui.RunnerUI(thePlayer);
-                break;
-            case GameState.SHOOTER:
-                //ui.RunnerUI(thePlayer);
-                break;
-        }
-            
-    }
-
-    void PlayerReload(Player thePlayer)
-    {
-		switch (curState)
-		{
-			case GameState.PAUSED:
-				break;
-			case GameState.RUNNER:
-				ui.RunnerUI(thePlayer);
-				break;
-			case GameState.SHOOTER:
-				//ui.RunnerUI(thePlayer);
-				break;
-		}
-	}
-
-    void PlayerStopReload(Player thePlayer)
+    void UpdateUI(Player thePlayer)
     {
         switch (curState)
         {
@@ -205,21 +161,59 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    #region STATES
+    void Pause()
+    {
+        setGameState(GameState.PAUSED);
+
+            //pull up UI
+    }
+
+    void Death()
+    {
+            //player died
+    }
+
+    #endregion
+
+    #region HEALTH
+
+    void PlayerHit(Player thePlayer)
+    {
+        UpdateUI(thePlayer);
+        thePlayer.gameObject.transform.DOPunchScale(new Vector3(1.2f, 1.2f, 0f), 1f);
+    }
+
+    void PlayerHeal(Player thePlayer)
+    {
+        UpdateUI(thePlayer);
+    }
+
+    #endregion
+
+    #region SHOOTING
+    void PlayerShoot(Player thePlayer)
+    {
+        UpdateUI(thePlayer);
+
+    }
+
+    void PlayerReload(Player thePlayer)
+    {
+        UpdateUI(thePlayer);
+    }
+
+    void PlayerStopReload(Player thePlayer)
+    {
+        UpdateUI(thePlayer);
+    }
+
     void PlayerAmmoPack(Player thePlayer)
     {
-		switch (curState)
-		{
-			case GameState.PAUSED:
-				break;
-			case GameState.RUNNER:
-				ui.RunnerUI(thePlayer);
-				break;
-			case GameState.SHOOTER:
-				//ui.RunnerUI(thePlayer);
-				break;
-		}
-	}
-	#endregion
+        UpdateUI(thePlayer);
+    }
+    #endregion
 
 
-}
+    }

@@ -46,6 +46,8 @@ public class Shooting : MonoBehaviour
         }
     }
     [SerializeField] bool canShoot;
+    [SerializeField] public float reloadTime;
+    [SerializeField] public float maxReloadTime;
 
     public delegate void PlayerReload(Player thePlayer);
     public static event PlayerReload playerReload;
@@ -74,17 +76,27 @@ public class Shooting : MonoBehaviour
         curAmmo = curBulletData.maxAmmoAmount;
         maxAmmo = curBulletData.maxAmmoAmount;
 
+        maxReloadTime = curBulletData.reloadSpeed;
+
         if (GetComponentInParent<Player>())
             playerShoot?.Invoke(GetComponentInParent<Player>());
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.Space))
         {
             Fire();
         }
+
+        //Check if Reloading
+        if (curState == ShootState.RELOADING)
+        {
+            reloadTime += Time.deltaTime;
+        }
+        else
+            reloadTime = 0;
     }
 
     void CreateBullet(Vector3 spawn, BulletData data)
