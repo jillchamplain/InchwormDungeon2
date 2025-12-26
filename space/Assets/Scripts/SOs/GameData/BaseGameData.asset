@@ -18,5 +18,9 @@ MonoBehaviour:
   healthGivenMult: 0
   ammoGivenMult: 0
   ammoTakeMult: 0
-  speedMult: 0
-  maxSpeed: 0
+  minSpeed: 1
+  maxSpeed: 5
+  startSpawnInterval: 5
+  minSpawnInterval: 2
+  diffInterval: 10
+  diffIncrease: 1

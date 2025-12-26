@@ -20,8 +20,14 @@ public class GameData: ScriptableObject
     [SerializeField] float ammoGivenMult;
     [SerializeField] float ammoTakeMult;
 
-    [SerializeField] float speedMult;
-    [SerializeField] float maxSpeed;
+    [SerializeField] public float minSpeed; //augment based on object's speed
+    [SerializeField] public float maxSpeed;
+
+    [SerializeField] public float startSpawnInterval; //Interval between spawns
+    [SerializeField] public float minSpawnInterval; //Least it can wait
+
+    [SerializeField] public float diffInterval; //How frequent to change difficulty
+    [SerializeField] public float diffIncrease; //How much to increase speed 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

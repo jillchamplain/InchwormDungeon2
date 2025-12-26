@@ -19,4 +19,13 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(data.lifetime);
         Destroy(gameObject);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.GetComponent<Enemy>())
+        {
+            collision.gameObject.GetComponent<Health>().Damage(data.damage);
+            Destroy(gameObject);
+        }
+    }
 }

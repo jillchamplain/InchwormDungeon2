@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
     public static event EnemyHealed enemyHealed;
     void Start()
     {
-        
+        health = maxHealth;
     }
 
     // Update is called once per frame

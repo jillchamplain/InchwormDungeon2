@@ -17,4 +17,14 @@ public class Player : MonoBehaviour
     {
         
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Enemy>()) 
+        {
+            gameObject.GetComponent<Health>().Damage(collision.gameObject.GetComponent<Enemy>().damage);
+            Destroy(collision.gameObject);
+        }
+    }
 }

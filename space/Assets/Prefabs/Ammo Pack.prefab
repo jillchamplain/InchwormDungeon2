@@ -100,6 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6211792984023779058}
   - component: {fileID: 2423688083306543179}
+  - component: {fileID: 5920970491109461285}
   - component: {fileID: 724942357528732727}
   - component: {fileID: 985355650714248800}
   m_Layer: 0
@@ -139,6 +140,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   rb: {fileID: 724942357528732727}
   speed: -2
+--- !u!114 &5920970491109461285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7181838334280542338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a88a93848b9524e9f13f7fa5fcd394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Spawnable
+  spawnType: 2
+  template: {fileID: 7181838334280542338}
 --- !u!50 &724942357528732727
 Rigidbody2D:
   serializedVersion: 5
