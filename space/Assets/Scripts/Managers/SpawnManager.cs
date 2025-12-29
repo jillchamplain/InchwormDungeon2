@@ -17,12 +17,18 @@ public class SpawnManager : MonoBehaviour
     }
     [SerializeField] SpawnPattern[] spawnPatterns;
     [SerializeField] LaneData laneData;
+
+    //Difficulty
     [SerializeField] GameData gameData;
     [SerializeField] Vector3 spawnPos;
     [SerializeField] float spawnSpeed;
     [SerializeField] float patternInterval;
-    float timeElapsed;
+
+    [SerializeField] float moveSpeed;
+
+    [SerializeField] float timeElapsed;
     bool canSpawn = true;
+    bool canDiff = false;
     
     SpawnPattern[] getSpawnPatterns() {  return spawnPatterns; }
     public SpawnPattern getSpawnPatternAt(int index)
@@ -46,19 +52,33 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         spawnSpeed = gameData.startSpawnInterval;
+        moveSpeed = gameData.minSpeed;
+        StartCoroutine(DiffTimer());
 
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        timeElapsed += Time.deltaTime;
+        //timeElapsed += Time.deltaTime * 10;
+        if(canDiff)
+        {
+            ChangeDifficulty();
+        }
+        
         if(canSpawn)
         {
-            CheckDifficulty();
             SpawnPattern();
 			StartCoroutine(SpawnTimer());
 		}
+    }
+
+    IEnumerator DiffTimer()
+    {
+        canDiff  = false;
+        yield return new WaitForSecondsRealtime(gameData.diffInterval);
+        canDiff = true;
+
     }
 
     IEnumerator SpawnTimer()
@@ -101,7 +121,8 @@ public class SpawnManager : MonoBehaviour
                 {
                     GameObject template = getSpawnableOfType(theData.spawnTypes[j]).template;
                     Vector3 spawn = new Vector3(spawnPos.x + xOffset, spawnPos.y + yOffset, 0);
-                    GameObject.Instantiate(template, spawn, Quaternion.identity);
+                    GameObject theSpawn = GameObject.Instantiate(template, spawn, Quaternion.identity);
+                    theSpawn.GetComponent<Movement>().speed = -moveSpeed;
                 }
             }
 			
@@ -110,16 +131,27 @@ public class SpawnManager : MonoBehaviour
         
     }
 
-    void CheckDifficulty()
+    void ChangeDifficulty()
     {
-        int num = (int)timeElapsed / (int)gameData.diffInterval;
-        float diffChange = num * gameData.diffIncrease;
-        spawnSpeed -= diffChange;
-        if(spawnSpeed < gameData.minSpawnInterval) //Makes sure game never spawns things inside each other 
-            spawnSpeed = gameData.minSpawnInterval;
+		/*if (timeElapsed % (int)gameData.diffInterval >= .25)
+            return;*/
+		//return;
+
+		//Change Spawn Speed
+		float diffChange = gameData.diffIncrease;
+		spawnSpeed -= diffChange;
+		if (spawnSpeed < gameData.minSpawnInterval) //Makes sure game never spawns things inside each other 
+			spawnSpeed = gameData.minSpawnInterval;
+
+        //Change Move Speed
+        float speedChange = gameData.speedIncrease;
+        moveSpeed += speedChange;
+        if(moveSpeed > gameData.maxSpeed)
+            moveSpeed = gameData.maxSpeed;
+        
+        StartCoroutine(DiffTimer());
+      
     }
-
-
 
 
 }

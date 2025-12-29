@@ -73,6 +73,15 @@ public class GameManager : MonoBehaviour
                     Time.timeScale = 0;
                 }
                 break;
+            case GameState.GAME_OVER:
+                lastState = curState;
+                curState = newState;
+                player.controller.setGameState(GameState.GAME_OVER);
+                ui.setGameState(GameState.GAME_OVER);
+                ui.GameOverUI();
+                Time.timeScale = 0;
+
+                break;
         }
     }
 
@@ -89,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         Health.playerHit += PlayerHit;
         Health.playerHealed += PlayerHeal;
-
+        Health.playerDied += Death;
     }
 
     private void OnDisable()
@@ -100,6 +109,7 @@ public class GameManager : MonoBehaviour
 
         Health.playerHit -= PlayerHit;
         Health.playerHealed -= PlayerHeal;
+        Health.playerDied -= Death;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -170,9 +180,10 @@ public class GameManager : MonoBehaviour
             //pull up UI
     }
 
-    void Death()
+    void Death(Player thePlayer)
     {
-            //player died
+        Debug.Log("PLAYER DIED");
+        setGameState(GameState.GAME_OVER);
     }
 
     #endregion

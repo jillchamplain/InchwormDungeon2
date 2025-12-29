@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] float health;
+    [SerializeField] public float health;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [SerializeField] float maxHealth;
+    [SerializeField] public float maxHealth;
 
     public delegate void PlayerHit(Player thePlayer);
     public static event PlayerHit playerHit;
@@ -13,11 +13,17 @@ public class Health : MonoBehaviour
     public delegate void PlayerHealed(Player thePlayer);
     public static event PlayerHealed playerHealed;
 
+    public delegate void PlayerDied(Player thePlayer);
+    public static event PlayerDied playerDied;
+
     public delegate void EnemyHit();
     public static event EnemyHit enemyHit;
 
     public delegate void EnemyHealed();
     public static event EnemyHealed enemyHealed;
+
+    public delegate void EnemyDied();
+    public static event EnemyDied enemyDied;
     void Start()
     {
         health = maxHealth;
@@ -30,13 +36,30 @@ public class Health : MonoBehaviour
     }
 
     public void Damage(float damage)
+
+        //Find way for player to get score if shot versus collides with player
     {
+        Debug.Log("calling from: " + this.gameObject);
         health -= damage;
 
-        if (GetComponentInParent<Player>())
-            playerHit?.Invoke(GetComponentInParent<Player>());
+        if(health <= 0)
+        {
+            if (GetComponentInParent<Player>())
+                playerDied?.Invoke(GetComponentInParent<Player>());
+            else
+            {
+                enemyDied?.Invoke();
+                Destroy(gameObject);
+            }
+                
+        }
         else
-            enemyHit?.Invoke();
+        {
+			if (GetComponentInParent<Player>())
+				playerHit?.Invoke(GetComponentInParent<Player>());
+			else
+				enemyHit?.Invoke();
+		}
 
     }
 

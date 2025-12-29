@@ -22,6 +22,7 @@ public class GameData: ScriptableObject
 
     [SerializeField] public float minSpeed; //augment based on object's speed
     [SerializeField] public float maxSpeed;
+    [SerializeField] public float speedIncrease;
 
     [SerializeField] public float startSpawnInterval; //Interval between spawns
     [SerializeField] public float minSpawnInterval; //Least it can wait

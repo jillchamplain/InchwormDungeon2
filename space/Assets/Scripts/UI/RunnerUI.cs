@@ -6,6 +6,8 @@ public class RunnerUI : UIGroup
     [SerializeField] TextMeshProUGUI ammo;
     [SerializeField] TextMeshProUGUI reload;
 
+    [SerializeField] TextMeshProUGUI health;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,5 +31,9 @@ public class RunnerUI : UIGroup
             reload.text = "Reloading...";
         else
             reload.text = "";
+
+
+        Health theHealth = thePlayer.health;
+        health.text = "H: " + theHealth.health + "/" + theHealth.maxHealth;
     }
 }

@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: TestSpawnPattern
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPattern
   spawnData:
-  - {fileID: 11400000, guid: 2143323de59a79548b9ec25e0f387eb6, type: 2}
-  - {fileID: 11400000, guid: 2143323de59a79548b9ec25e0f387eb6, type: 2}
-  - {fileID: 11400000, guid: 2143323de59a79548b9ec25e0f387eb6, type: 2}
-  - {fileID: 11400000, guid: 8c7de018599ba254d8e9dd8c0e52d2d6, type: 2}
-  - {fileID: 11400000, guid: b546146e659bde744a729bbfed15c083, type: 2}
+  - {fileID: 11400000, guid: 3b717283f2b70194bbb8d48b3d13c43f, type: 2}
+  - {fileID: 11400000, guid: 3b717283f2b70194bbb8d48b3d13c43f, type: 2}
+  - {fileID: 11400000, guid: 3b717283f2b70194bbb8d48b3d13c43f, type: 2}
+  - {fileID: 11400000, guid: 3b717283f2b70194bbb8d48b3d13c43f, type: 2}
   - {fileID: 11400000, guid: 3b717283f2b70194bbb8d48b3d13c43f, type: 2}

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c47b11d181ce8e48ad4cf991f6386b8, type: 3}
   m_Name: LeftSpawnData
   m_EditorClassIdentifier: Assembly-CSharp::SpawnData
-  spawnTypes: 000000000000000005000000
+  spawnTypes: 000000000500000005000000

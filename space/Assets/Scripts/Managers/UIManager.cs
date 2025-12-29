@@ -46,12 +46,12 @@ public class UIManager : MonoBehaviour
         if (gameState == GameState.RUNNER)
         {
             getUIGroup("Runner").UpdateUI(true, thePlayer);
-            getUIGroup("World Runner").UpdateUI(true, thePlayer);
+            getUIGroup("WorldRunner").UpdateUI(true, thePlayer);
         }
         else
         {
             getUIGroup("Runner").UpdateUI(false);
-            getUIGroup("World Runner").UpdateUI(false);
+            getUIGroup("WorldRunner").UpdateUI(false);
         }
 
     }
@@ -70,5 +70,13 @@ public class UIManager : MonoBehaviour
             getUIGroup("Pause").UpdateUI(true);
         else
             getUIGroup("Pause").UpdateUI(false);
+    }
+
+    public void GameOverUI()
+    {
+        if (gameState == GameState.GAME_OVER)
+            getUIGroup("GameOver").UpdateUI(true);
+        else
+            getUIGroup("GameOver").UpdateUI(false);
     }
 }

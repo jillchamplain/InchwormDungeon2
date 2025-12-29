@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class GameOverUI : UIGroup
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] public float damage;
     void Start()
     {
         
@@ -14,5 +13,4 @@ public class Enemy : MonoBehaviour
     {
         
     }
-
 }
